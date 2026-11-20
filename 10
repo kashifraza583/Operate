@@ -1,0 +1,32 @@
+
+n = int(input("Enter number of processes: "))
+
+processes = []
+
+for i in range(n):
+    bt = int(input(f"Enter burst time for P{i+1}: "))
+    priority = int(input(f"Enter priority for P{i+1}: "))
+
+    processes.append([f"P{i+1}", bt, priority])
+
+# Lower number means higher priority
+processes.sort(key=lambda x: x[2])
+
+waiting = [0] * n
+turnaround = [0] * n
+
+for i in range(1, n):
+    waiting[i] = waiting[i-1] + processes[i-1][1]
+
+for i in range(n):
+    turnaround[i] = waiting[i] + processes[i][1]
+
+print("\nProcess\tBurst Time\tPriority\tWaiting Time\tTurnaround Time")
+
+for i in range(n):
+    print(processes[i][0], "\t", processes[i][1], "\t\t",
+          processes[i][2], "\t\t", waiting[i], "\t\t",
+          turnaround[i])
+
+print("\nAverage Waiting Time:", sum(waiting)/n)
+print("Average Turnaround Time:", sum(turnaround)/n)
